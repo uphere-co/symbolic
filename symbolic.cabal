@@ -1,0 +1,144 @@
+Name:                   symbolic
+Version:                0.1
+Cabal-version:          >=1.8
+Tested-with:            GHC >= 7.10
+Build-type:             Simple
+Synopsis:               Symbolic computation
+Description:            Efficient symbolic computation library
+License:                OtherLicense
+License-file:           LICENSE
+Author:                 UpHere, Inc.
+Maintainer:             Ian-Woo Kim <ianwookim@gmail.com>
+Homepage:               https://github.com/uphere-co/nlp-prototype
+Bug-reports:            https://github.com/uphere-co/nlp-prototype
+
+Category:               Symbolic Computation
+Stability:              Experimental
+
+Extra-source-files:     
+
+source-repository HEAD
+  type:                 git
+  location:             https://github.com/uphere-co/nlp-prototype
+  branch:               master
+  -- tag:                  0.1
+
+-------------------------------------------------------
+  
+Library
+  hs-source-dirs:       lib
+  Build-depends:        base,
+                        array,
+                        binary,
+                        bytestring,
+                        containers,
+                        either,
+                        hashable,
+                        language-c,
+                        llvm-general,
+                        llvm-general-pure,
+                        lens,
+                        MemoTrie,
+                        mtl,
+                        pretty,
+                        transformers,
+                        unordered-containers,
+                        vector,
+                        zenc
+  Exposed-modules:
+                        -- Symbolic.CodeGen.C               -- for the time being
+                        Symbolic.CodeGen.LLVM.Exp
+                        Symbolic.CodeGen.LLVM.JIT
+                        Symbolic.CodeGen.LLVM.Operation
+                        Symbolic.CodeGen.LLVM.Run
+                        Symbolic.Dependency
+                        Symbolic.Differential
+                        Symbolic.Eval
+                        Symbolic.Predefined
+                        Symbolic.Print
+                        Symbolic.Simplify
+                        Symbolic.Type
+                        Symbolic.Util
+
+  Other-modules:        
+
+  ghc-options:          -O2 -Wall
+                        -funbox-strict-fields
+                        -fno-warn-unused-do-bind
+                        -fno-warn-orphans
+
+  ghc-prof-options:     -caf-all -auto-all
+
+-------------------------------------------------------
+
+test-suite test
+  type:                 exitcode-stdio-1.0
+  hs-source-dirs:       tests
+  main-is:              test.hs
+  build-depends:        base >= 4 && < 5,
+                        --
+                        hashable,
+                        MemoTrie,
+                        tasty,
+                        tasty-hunit,
+                        tasty-quickcheck,
+                        tasty-smallcheck,
+                        unordered-containers,
+                        --
+                        symbolic
+
+-------------------------------------------------------
+    
+Executable eval
+  Main-is:              eval.hs
+  hs-source-dirs:       exe
+  other-modules:       
+  ghc-options:          -Wall -O2
+                        -threaded
+                        -funbox-strict-fields
+                        -fno-warn-unused-do-bind
+
+  ghc-prof-options:     -auto-all
+  extra-libraries:     
+  c-sources:            
+  build-depends:        base,
+                        --
+                        hashable,
+                        MemoTrie,
+                        transformers,
+                        unordered-containers,
+                        vector,
+                        --
+                        symbolic
+
+-------------------------------------------------------
+
+                        
+Executable llvm
+  Main-is:              llvm.hs
+  hs-source-dirs:       exe
+
+  other-modules:       
+  ghc-options:          -Wall -O2
+                        -threaded
+                        -funbox-strict-fields
+                        -fno-warn-unused-do-bind
+
+  ghc-prof-options:     -auto-all
+  extra-libraries:     
+  c-sources:            
+                        
+  build-depends:        base,
+                        --
+                        containers,
+                        hashable,
+                        llvm-general,
+                        llvm-general-pure,
+                        MemoTrie,
+                        mtl,
+                        vector,
+                        transformers,
+                        unordered-containers,
+                        --
+                        symbolic
+                        
